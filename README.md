@@ -1,3 +1,3 @@
-#Mini-DoorDash
+# Mini-DoorDash
 
-This is a personal project for learning purpose.
+This is a personal project for learning purposes.
