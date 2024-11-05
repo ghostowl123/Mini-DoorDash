@@ -1,0 +1,196 @@
+<!-- 主要讲了这个图 https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  </head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        class Parent extends React.Component{
+            constructor(props){
+                super(props);
+                this.state ={
+                    balance:1000,
+                    showChild: false
+                }
+                console.log("constructor() - Parent Component");
+            }
+           
+            componentDidMount() {
+                console.log("componentDidMount() - Parent Component");
+            }
+            /*
+             key 与 value 名字一样时 我们可以像下面一样缩写
+            
+            */
+            componentDidUpdate(prevProps, prevState){
+                console.log("componentDidUpdate() - Parent Component",{
+                    prevProps,
+                    prevState
+                });
+            }
+            componentWillUnmount() {
+                console.log("componentWillUnmount() - Parent Component");
+            }
+
+            render() {
+                console.log("render() - Parent Component");
+
+                return (<div>
+                        <p>Name: {this.props.name} </p>
+                        <p>继承者的故事</p>
+                        <p>Parent</p>
+                        <p>account balance:{this.state.balance} </p>
+
+                        <button
+               onClick={() => {
+                 this.setState({
+                   showChild: !this.state.showChild,
+                 });
+               }}
+             >
+               生小宝宝 / 消失掉小宝宝
+             </button>
+
+
+             <button
+               onClick={() => {
+                 this.setState({
+                   balance: this.state.balance + 100,
+                 });
+               }}
+             >
+               给小宝宝挣奶粉钱
+             </button>
+
+
+             {this.state.showChild ? (
+               <Child
+                 balance={this.state.balance}
+                 parentsSetState={(newBalance) =>
+                   this.setState({
+                     balance: this.state.balance + newBalance,
+                   })
+                 }
+               />
+             ) : null}
+           </div>
+         );
+       }
+     }
+
+        class Child extends React.Component {
+       constructor(props) {
+         super(props);
+         this.state = {
+           balance: 0,
+         };
+         console.log("constructor() - Child Component");
+       }
+
+
+       componentDidMount() {
+         console.log("componentDidMount() - Child Component");
+       }
+
+
+       componentDidUpdate(prevProps, prevState) {
+         console.log("componentDidUpdate - Child Component", {
+           prevProps,
+           prevState,
+         });
+       }
+
+
+       componentWillUnmount() {
+         console.log("componentWillUnmount() - Child Component");
+       }
+
+
+       render() {
+         console.log("render() - Child Component");
+         return (
+           <div>
+             <p>Child</p>
+             <p>Parent's account balance: {this.props.balance} </p>
+             <p>自己的小金库 {this.state.balance} </p>
+
+
+             <button
+               onClick={() => {
+                 this.props.parentsSetState(100);
+
+
+                 this.setState({
+                   balance: this.state.balance + 100,
+                 });
+               }}
+             >
+               我要存钱
+             </button>
+           </div>
+         );
+       }
+     }
+
+     ReactDOM.render(
+       [<Parent name="ZhangSan" />, <Parent name="LiSi" />],
+       document.getElementById("root")
+     );
+
+
+    </script>
+    
+</body>
+</html>
+
+
+<!-- 
+    class components 可以不写 constructor 在JS中
+    lifecycle method中 只有 render是required 其他是optional
+    Mounting -> 出生 -> components 出现在DOM上
+    执行顺序一定记住
+    life cycle methods
+    constructor 
+    static getDerivedStateFromProps  -> 基于一些props的value得到states
+    render   
+    React updates DOM and refs
+
+    componentDidMount -> react与外界交互(eg.调用API) side effects 放在componentDidMount method里面
+    
+
+    
+    
+    
+    updating -> grow
+
+    1.New Props coming -> 经过shouldComponentUpdate 判断
+    2.setState() -> 经过shouldComponentUpdate 判断
+    3.forceUpdate() -> 直接 render
+
+    static getDerivedStateFromProps 
+
+    shouldComponentUpdate
+
+    render
+    
+    getSnapshotBeforeUpdate update前记录一下当前状态
+
+    React updates DOM and refs
+
+    componentDidUpdate
+
+
+
+    Unmounting -> dead 当components 从 DOM里面离开
+    componentWillUnmount
+
+
+ -->

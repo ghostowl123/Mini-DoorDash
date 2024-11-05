@@ -1,0 +1,7 @@
+why cache?
+
+Temporal locality -> data you most recently used. you most likely will use it
+                        again
+
+Spatial locality -> store the data consecutively. data near the accessed data may also be used
+

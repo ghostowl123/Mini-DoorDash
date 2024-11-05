@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+        console.log("Hello World")
+        class Parent extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    balance:1000,
+                    motto: "ABC"
+                };
+                this.regularFunction = this.regularFunction.bind(this);
+            }
+            // 改变state 用setState
+            regularFunction(){
+                this.setState({
+                    balance:0,
+                });
+            }// regularFunction 用this 需要绑定 bind otherwise default value: undefine
+            regularFunctionWithoutBinding(amt){
+                this.setState({
+                    balance:this.state.balance-amt,
+                });
+            }
+
+            arrowFunction = () =>{
+                this.setState({
+                    balance:this.state.balance +10,
+                });
+
+            };
+
+            render(){
+                return (
+                    <div>
+                        继承者的故事
+                        <div>Parent</div>
+                        <div>Balance{this.state.balance}</div>
+                        
+                        <button onClick={this.regularFunction}>破产</button>
+                        <button onClick={this.regularFunctionWithoutBinding.bind(this,10)}>亏本-10</button>
+                        <button onClick={() => this.regularFunctionWithoutBinding(20)}>亏本-20</button>
+                        <button onClick={this.arrowFunction}>盈利+10</button>
+                        <button onClick={() => alert("remember to pay your taxes")}>偷税漏税</button>
+                        
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <ChildA  balance={this.state.balance} loseAllMoney={this.regularFunction}/>
+                    <ChildB  balance={this.state.balance} spendMoney={(amt) => this.regularFunctionWithoutBinding(amt)}/>
+
+                    </div>
+                    );
+
+            }
+        }
+        // 这里 spendMoney 如果不bind 下面会报错   要么所有都用 arrowfunction =（）=>{}  要么在constructor定义好bind 
+// 注意用class时用 this
+        class ChildA extends React.Component{
+            render() {
+                return <div>
+                        ChildA
+                        <div> 父母账号余额：{this.props.balance}</div>
+                        <button onClick ={this.props.loseAllMoney}> 偷钱</button>
+                    </div>
+            }
+        }
+        class ChildB extends React.Component{
+
+            render(){
+                return <div>
+                        ChildB
+                        <div> 父母账号余额：{this.props.balance}</div>
+                        <button onClick = {() => this.props.spendMoney(666)}>花钱</button>
+                    
+                    </div>
+            }
+
+        }
+
+        ReactDOM.render(<Parent/>, document.getElementById("root"));
+
+    </script>
+  </body>
+</html>
+
+<!-- 子元素可以修改的state 在 class components 里面是 object   -->

@@ -1,0 +1,137 @@
+
+<!-- 
+    ＤＯＭ
+    是代表　ｗｅｂ　ｐａｇｅ　用户浏览的内容　用户看的见摸得着可交互的部分
+
+    为啥用DOM（Document object Model） ?
+    文本处理容易出错 所以我们希望用JavaScript 进行Object化处理
+
+    DOM 是怎样被创建出来的？哪些是Object？
+
+    DOM tree 每一个Html taｇ　都是一个object　确保数据一致性　对object　可以进行一直操作
+    ＪＳ里这里叫做Prototype
+
+    ＢＯＭ　Ｂｒｏｗｓｅｒ　Ｏｂｊｅｃｔ　Ｍｏｄｅｌ对于浏览器的操作　－》　ＪＳ　ｔａｌｋ　ｔｏ　ｔｈｅ　ｂｒｏｗｓｅｒ
+    
+    Ｏｎｅ　ｅｌｅｍｅｎｔ　ｏｎｅ　ｉｄ
+    ｉｄ　ｉｓ　ｕｎｉｑｕｅ
+
+    ｂｕｔ　ｗｅ　ｃａｎ　ｇｅｔ　ｍｕｌｔｉｐｌｅ　ｃｌａｓｓｅｓ
+
+    面试说项目
+    Ｕｓｅ　ｃａｓｅ角度出发
+    项目有哪些featureｓ　
+
+    　“＃”　英文叫　Ｈａｓｈ　ｔａｇ／ｐｏｕｎｄ
+
+    Ｌｉｖｅ　Ｈｔｍｌ　Ｃｏｌｌｅｃｔｉｏｎ　会变化
+
+    ＮｏｄｅＬｉｓｔ　ｉｓ　ｓｔａｔｉｃ　ｗｏｎ＇ｔ　ｃｈａｎｇｅ
+
+    useCapture 为 true  ->    capture phase 顺序执行
+                为false ->    bubbling phase 顺序执行
+    capture phase 
+    上到下
+    Bubbling phase
+    下到上
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #child{
+            width: 100px;
+            height: 100px;
+            background-color: bisque;
+        }
+        #parent{
+            width: 200px;
+            height: 200px;
+            background-color: saddlebrown;
+        }
+        #grandparent{
+            width: 300px;
+            height: 300px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id ="user" class="common">
+        user
+        <ul class="box common">
+            <li id = "john">John</li>
+            <li id="peter"> Peter</li>
+
+        </ul>
+    </div>
+    <div id="grandparent">
+        <div id="parent">
+            <div id="child">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const oUser = document.getElementById("user");
+        const oLis = document.getElementsByTagName("li");
+        // const boxCommon = document.getElementsByClassName("common box");
+        const boxCommon = document.getElementsByClassName("common box")[0];
+        const peter = oLis[1];
+
+        const oCommon = document.getElementsByClassName("common");
+        const oCommon2 = document.querySelectorAll(".common");
+        //example of create a elements using html tag
+        const xiaohong = document.createElement("li");
+    
+        xiaohong.innerText ="Xiao Hong";
+        xiaohong.id = "xiaohong";
+        // peter.before(xiaohong);
+        // peter.after(xiaohong);
+        // boxCommon.append(xiaohong);
+        boxCommon.prepend(xiaohong);
+
+
+        const xiaozhang = document.createElement("li");
+        // xiaozhang.innerHTML = "<mark><i><b> Xiao Zhang <b><i><mark>";
+        xiaozhang.innerHTML = "<mark><i><b> Xiao Zhang <b><i><mark>";
+        xiaozhang.id ="xiaozhang";
+        boxCommon.append(xiaozhang);
+
+        xiaozhang.className = "三好学生 班干部 班长";
+        xiaozhang.classList.remove("班长");
+        xiaozhang.classList.add("LaiOffer");
+        xiaozhang.style.color = "red";
+
+        
+        const grandparent = document.getElementById("grandparent");
+        const parent = document.getElementById("parent");
+        const child = document.getElementById("child");
+        
+
+        grandparent.addEventListener("click",()=>{
+            console.log("grandparent");
+
+        }, false );
+    // capture phase  true
+    // 上到下
+    // Bubbling phase false
+    // 下到上
+
+        parent.addEventListener("click",()=>{
+            console.log("parent");
+
+        }, false );
+        child.addEventListener("click",(event)=>{
+            event.stopPropagation();
+            console.log("child");
+        }, false );
+
+    </script>
+</body>
+</html>

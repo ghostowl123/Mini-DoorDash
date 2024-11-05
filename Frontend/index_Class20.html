@@ -1,0 +1,120 @@
+<!-- 
+    Hooks 
+    
+    const[name,setName] = useState(initialValue)
+    destruct
+    这里返回值为array
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Document</title>
+     <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+     <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+   </head>
+ <body>
+     <div id="root"></div>
+     
+     <script type="text/babel">
+         const Parent= () =>{
+            const[balance,setBalance] =  React.useState(1000);
+            const[showChild,setShowChild] =  React.useState(false);
+            
+            React.useEffect(() => {
+                console.log("componentDidMount()/componentUpdate-ParentComponet");
+
+                return () =>{
+                    console.log("clean up/componentWillUnmount() - Parent Component");
+                }
+            })
+            // dependency array[]
+            // case1: passing no dependency array --> 没有优化 when ever a stats change / pass in a new props , Always run side effects
+            // case2: passing an empty array[] --> run side effect only once on the initial number
+            //case 3: passing a not empty array[A,B,C] --> IFF (if and only if) A or B or C change I run side effect 
+ 
+            console.log("render() - Parent Component");
+
+
+       return (
+         <div>
+           <p>继承者们的故事</p>
+           <p>Parent</p>
+           <p>account balance: {balance}</p>
+
+
+           <div>
+             <button
+               onClick={() => {
+                 setShowChild(!showChild);
+               }}
+             >
+               生小宝宝 / 消失的ta
+             </button>
+           </div>
+
+
+           <div>
+             <button
+               onClick={() => {
+                 setBalance(balance + 100);
+               }}
+             >
+               给小宝宝挣奶粉钱
+             </button>
+           </div>
+
+
+           {showChild ? <Child balance={balance} /> : null}
+         </div>
+       );
+     };
+
+
+     const Child = (props) => {
+       const [balance, setBalance] = React.useState(0);
+
+
+       React.useEffect(() => {
+         console.log(
+           "componentDidMount() / componentDidUpdate() - Child Component"
+         );
+
+
+         return () => {
+           console.log("clean up / componentWillUnmount() - Child Component");
+         };
+       });
+
+
+       console.log("render() - Child Component");
+       return (
+         <div>
+           <p>Child</p>
+           <p>Parent's account balance: {props.balance}</p>
+           <p>自己的小金库: {balance}</p>
+
+
+           <div>
+             <button
+               onClick={() => {
+                 setBalance(balance + 100);
+               }}
+             >
+               我要存钱
+             </button>
+           </div>
+         </div>
+       );
+     };
+
+
+     ReactDOM.render(<Parent />, document.getElementById("root"));
+   </script>
+ </body>
+</html>
+
+

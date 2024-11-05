@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //lodash 常用三方库 deepcopy会用到 JS原生只有浅copy  flatten object引用object全展开
+        // var canAccessVar; 到这里
+        //let and const, cannot be re-initialized
+
+        let a = 1;
+
+        const b =1;
+        // var can be initialized you cannot make sure it already initialize or not it can be overwrite
+        // Never use Var , backward compatible
+        var c = 1;
+        var c = "cat";
+        
+        // scope
+        // block scope- only visible inside the curly braces{...} let, const
+        // function scope- inside the function's curly braces,let const,var
+         // 可以通过console访问到var
+        {
+            const xConstant= 1;
+            let xLet = 1;
+            var xVar = 1;
+        }
+        // 可以通过console访问到var
+        for(let i =0; i < 1; i++){
+            const xConstantLoop= 1;
+            let xLetLoop = 1;
+            var xVarLoop = 1;
+        }
+         //都访问不到
+        function exampleFunction() {
+            const xConstant= 1;
+            let xLet = 1;
+            var xVar = 1;
+
+        }
+        const arrowFunctionExample = () => {
+            const xConstantArrowFunction =1;
+            let xLetArrowFunction = 1;
+            var xVarArrowFunction = 1;
+        }
+
+        //hoisting - raise the declaration step to  the top of the scope
+        // console.log("var",canAccessVar);//undefine 不确定性 可能之前被移除了 可能这里就是没定义
+        // console.log("let",canAccesslet);// cannot access before initilize
+        // console.log("const",canAccessconst);//cannot access before initilize
+
+        var canAccessVar = 1;
+        // var canAccessVar; 这个因为declaration的缘故会被举到script的顶部
+        //canAccessVar= 1;
+        //程序报错 还是不报错好？
+        //报错 -> 不报错的话滚雪球效应 我们不知道错误发生 以至于错误越来越大
+        let canAccesslet = 1;
+        const canAccessconst = 1;
+
+        //destructing
+
+        const array = [1, true,"zhangsan"];
+        // const x = array[0];
+        // const y = array[1];
+        // const z = array[2];
+        //d is undefine since there is no value assign by array
+        //JS by default value is undefine
+        const [x,y,z,d] =array;
+        //const{} = myObject;
+        const laiofferStudentProfile = {
+            name : "zhangsan",
+            age : 19,
+            moto: "ABC",
+            home:{
+                address:"CA",
+                numOfApartment: 100,
+                furnished: false,
+            },
+        };
+        //same concept we can catch the value one by one
+        //注意 这里如果是object 必须为key值
+        //如果key值 之前有用过 重名 我们可以用下面这种方式rename冲突key
+        const name = "Lisi";
+        const {name:studentName,age,moto,home} = laiofferStudentProfile;
+
+        // ... 
+        // rest/ spread operator
+        
+        // rest operator - in a function's signature
+        function fnWithDefaultValue(name,age = 18,occupation= "SDE"){
+            console.log("name", name);
+            console.log("age",age);
+        }
+        // ... 把所有变量打包成array传进来
+        function fn(...args){
+            console.log("args",args);
+        }
+        fn();
+        fn(1);
+        fn(1,2);
+        fn(1,2,3);
+        //不管后面变量有多少传进来 第一个必须是name
+        function fn2(name, ...args){
+            console.log("name",name);
+            console.log("args",args);
+        }
+        fn2();
+        fn2("kevin");
+        fn2("kevin",1);
+
+        //spread operator
+
+        const arr1 = [1,2,3];
+        const arr2 = [4,5,6];
+        // 把上述两个array 结合起来怎么写呢？
+        const arr3 = [...arr1,...arr2];
+        //只展开一层
+        //如果键值重复 或者要修改键值 我们就直接覆盖
+        const zhangsanStudent = {
+            ...laiofferStudentProfile,
+            name : "Kevin",
+        };
+
+        // class  JS不完全是OOP Hyrid
+        class Person{
+            constructor(name, age = 10){
+                this.name = name;
+                this.age = age;
+                this.occuption = "SDE"
+            }
+        
+            methodA() {
+                console.log("name", this.name);
+            }
+            methodB() {
+                console.log("age", this.age);
+            }
+        }
+        // inheritence
+        class Student extends Person{
+            constructor(name,age,school) {
+                super(name,age);
+                this.school = school;
+            }
+            //undefine 是method里的return
+            methodC(){
+                console.log("school", this.school);
+            }
+        }
+
+        const person1 = new Person("zhangsan",18);
+        const person2 = new Person("Lisi",17);
+
+        const student1 = new Student("WangWu", 18 , "A School");
+        
+
+        // arrow function
+        const arrowFunc1 = (a,b) =>{
+            return a+b;
+        };
+        // one-liner function 情况下 可以不用写 return 和 {}
+        const arrowFunc2 = (a,b) => a+b;
+        // arrowFunc1 == arrowFunc2
+
+        //这里的template String 只能用  backtick  `
+        const xiaozhang = "Xiao Zhang";
+        const xiaohong = "Xiao Hong";
+        const diploma = "Congrats ! You've completed the course.";
+        console.log(xiaozhang+" " + diploma);
+        
+        console.log(`Congrats, ${xiaozhang} ! You've completed the course.`);
+
+    </script>
+</body>
+</html>

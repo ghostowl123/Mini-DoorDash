@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello React!</title>
+    <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+   <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+   <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // React code will go here
+
+
+        //browser DOMs
+        const ele1 = document.createElement("h3");
+        ele1.innerText = "this is a header 3";
+        document.getElementById("root").append(ele1);
+
+        // virtual DOM
+        // React.createElement(type, props, ...children);
+        const ele2 = React.createElement("h1", null, "this is a VDOM header 1");
+        document.getElementById("root").append(ele2);
+
+
+        //JSX
+        const ele3 = <h1>Hello World3</h1>;
+        
+        const version = 4;
+        const ele4 = <h1>Hello World {version + 2}</h1>;
+
+        //Function Component
+
+        function Hello(props){
+            console.log("props", props);
+            return (<div>
+                        <h1>Hello {props.name}, your age is {props.age}</h1>
+                    </div>
+                );
+                
+            
+        }
+
+        //Class Component
+        class Hello3 extends React.Component{
+
+
+
+            render(){
+                return<h3>Hello3 {this.props.name} </h3>
+            }
+        }
+
+
+        ReactDOM.render(
+             [ele2, ele3, ele4,<Hello name="XiaoHong" age = {20}/>,<Hello3 name ="Ze"/>],
+            document.getElementById("root")
+        );
+
+
+
+    </script>
+    
+</body>
+</html>
+
+<!-- prop object  
+    父传子
+    components 组件之间传递的信息 - Read-Only
+    1.pure function same input same output
+    2.no side effect (跟react 无关的功能 如调用后端API)
+
+
+-->
